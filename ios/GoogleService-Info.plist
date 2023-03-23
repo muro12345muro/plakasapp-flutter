@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>675601469311-frnok390po8p3kfnrq31d7n69vnl9u64.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.675601469311-frnok390po8p3kfnrq31d7n69vnl9u64</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAIsBOqN_q9L8c_N3bdM3oWTrNB8DQhFGE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>675601469311</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.firstapp.PlakasApp</string>
+	<key>PROJECT_ID</key>
+	<string>plakasapp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>plakasapp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:675601469311:ios:fc2c5e4e389523f13f944a</string>
+	<key>DATABASE_URL</key>
+	<string>https://plakasapp-default-rtdb.europe-west1.firebasedatabase.app</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-7198758748123978~3333096960</string>
+</dict>
+</plist>

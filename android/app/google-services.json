@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "675601469311",
+    "firebase_url": "https://plakasapp-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "plakasapp",
+    "storage_bucket": "plakasapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675601469311:android:52faf416c78acb893f944a",
+        "android_client_info": {
+          "package_name": "com.firstapp.PlakasApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675601469311-sb3fkfghq2u68ah76609n4pnkab17k26.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj_QC7M56T1tV7Ybius2XmWXjj9N6c1yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675601469311-sb3fkfghq2u68ah76609n4pnkab17k26.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "675601469311-1bhrtr04rbgtjvj41qt3l5n7v364rejk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sscarApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
