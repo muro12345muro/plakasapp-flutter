@@ -341,13 +341,15 @@ class _AddNewLicensePlatePageState extends State<AddNewLicensePlatePage> {
         log("ImagePicker().pickVideo returns null 12e1_ed12");
         return;
       }
-      showSnackbar(
-        context: context,
-        color: AppConstants().primaryColor,
-        isInfinite: true,
-        showProgressCircle: true,
-        message: "Video yükleniyor lütfen bekleyin",
-      );
+      if (mounted) {
+        showSnackbar(
+          context: context,
+          color: AppConstants().primaryColor,
+          isInfinite: true,
+          showProgressCircle: true,
+          message: "Video yükleniyor lütfen bekleyin",
+        );
+      }
       final imageTemparory = File(image.path);
       uploadimage = imageTemparory;
       setState(() {
