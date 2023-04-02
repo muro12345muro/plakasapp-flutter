@@ -82,7 +82,12 @@ class _PreferencesSettingsPageState extends State<PreferencesSettingsPage> {
     await UserDatabaseService(userUid: widget.userUid).setUsersAccountDisabled(true);
     if (!mounted) return;
     signOutFunction();
-    Navigator.pop(context);
+    final UserPreferencesInfo editedInfo = UserPreferencesInfo(
+      forSaleLink: "",
+      isForSale: false,
+      onlyReadyMessages: true,
+    );
+    Navigator.pop(context, editedInfo);
     PushNotificationsFunctions().sendNotificationToAllModerators(
       notificationKind: ModeratorReportCases.accountDeletion,
     );
