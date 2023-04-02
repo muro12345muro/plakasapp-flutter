@@ -265,6 +265,7 @@ class _SetNicknamePageState extends State<SetNicknamePage> {
   void openCameraFunction(){
     pickProfilePhoto(ImageSource.camera);
   }
+
   void pickFromGallery(){
     pickProfilePhoto(ImageSource.gallery);
   }

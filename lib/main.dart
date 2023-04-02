@@ -12,7 +12,6 @@ import 'package:sscarapp/helper/user_defaults_functions.dart';
 import 'package:sscarapp/pages/DM/dm_list_page.dart';
 import 'package:sscarapp/services/firebase/database/user/user_database_service.dart';
 import 'package:sscarapp/services/firebase/firestore/notifications_services.dart';
-import 'package:sscarapp/services/revenue_cat/store_config.dart';
 import 'package:sscarapp/tabBarPages/activities_page.dart';
 import 'package:sscarapp/tabBarPages/home_page_main.dart';
 import 'package:sscarapp/shared/app_constants.dart';
@@ -21,17 +20,25 @@ import 'package:sscarapp/tabBarPages/self_user_profile_page.dart';
 
 
 Future main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
+
   //initRevenue();
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
+
   // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+
+  ByteData data = await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
+
   runApp(const MyApp());
 }
 
@@ -46,6 +53,7 @@ Future main() async {
 *
 *
 * */
+
 
 
 class MyApp extends StatefulWidget {
