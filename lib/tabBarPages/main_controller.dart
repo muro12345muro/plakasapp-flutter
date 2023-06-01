@@ -431,9 +431,7 @@ class MainControllerTabBarState extends State<MainControllerTabBar> {
     }
 
     contactUsFunction() {
-      if (_userUid == null) {
-        return;
-      }
+      if (_userUid == null) return;
       showTextFieldAlertDialog(
           context: context,
           title: "Bize ulaş",
