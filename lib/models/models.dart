@@ -643,6 +643,35 @@ class PremiumAccountDetails {
 
 }
 
+class PlateImageUserUpload{
+  final String imagePath;
+  final String user;
+  final int date;
+  final bool isUser;
+
+  PlateImageUserUpload({
+    required this.imagePath,
+    required this.user,
+    required this.date,
+    required this.isUser,
+  });
+
+
+  Map<String, dynamic> toJson() => (<String, dynamic>{
+    'isUser': isUser,
+    'user': user,
+    'date': date,
+    'imagePath': imagePath,
+  });
+
+  PlateImageUserUpload.fromJson(Map<dynamic, dynamic> json)
+      : isUser = json['isUser'],
+        user = json['user'],
+        date = json['date'],
+        imagePath = json['imagePath'];
+}
+
+
 
 enum DirectMessageKinds{
   text,

@@ -1,11 +1,15 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sscarapp/helper/manuplator_functions.dart';
 import 'package:sscarapp/models/models.dart';
 import 'package:sscarapp/pages/DM/dm_chat_page.dart';
 import 'package:sscarapp/pages/licensePlates/add_new_license_plate_page.dart';
 import 'package:sscarapp/pages/view_single_photo.dart';
+import 'package:sscarapp/services/firebase/database/license_plates/license_plates_services.dart';
 import 'package:sscarapp/services/mysql/custom_api_requests.dart';
 import 'package:sscarapp/shared/app_constants.dart';
 import 'package:sscarapp/widgets/custom_widgets.dart';
@@ -14,6 +18,7 @@ import '../../helper/user_defaults_functions.dart';
 import '../../services/firebase/database/user/user_database_service.dart';
 import '../../widgets/driving_points_action_widget.dart';
 import '../../widgets/emoji_reactions_section.dart';
+import '../../widgets/modal_bottom_sheet_edit_profile.dart';
 import '../../widgets/wall_posts_container_widget.dart';
 import '../auth/register_user_page.dart';
 
@@ -47,6 +52,8 @@ class _TargetNonuserPlateProfilePageState extends State<TargetNonuserPlateProfil
   EmojisCollection? userEmojisCollection = EmojisCollection();
   UserDrivingPointsInfo? userDrivingPoints = UserDrivingPointsInfo();
 
+  List<PlateImageUserUpload>? _plateImageUserUploadList;
+
   EmojiKinds? givenEmoji;
 
   @override
@@ -57,7 +64,19 @@ class _TargetNonuserPlateProfilePageState extends State<TargetNonuserPlateProfil
     fillCityByCityCode();
     getUserLoggedInStatus();
     getPlatesImageByAPI();
+    _getPlatesGalleryImages();
+
   }
+
+  _getPlatesGalleryImages() async {
+    _plateImageUserUploadList = await LicensePlatesServices(safePlateNumber: widget.plateNumber)
+        .getLicensePlateImageUploadeds();
+    log("@3f23f23_32f2f23f ${_plateImageUserUploadList?[0].imagePath}");
+    if (_plateImageUserUploadList != null) {
+      setState(() { });
+    }
+  }
+
 
   getPlatesImageByAPI() async {
     final visualPlate = StringPlateExtensions.makePlateVisualString(widget.plateNumber);
@@ -419,6 +438,8 @@ class _TargetNonuserPlateProfilePageState extends State<TargetNonuserPlateProfil
                                                         return const RegisterUserPage();
                                                       }));
                                                       return;
+                                                    }else{
+                                                      showSnackbar(context: context, color: Colors.orangeAccent, message: "Kişi numarası ekli değil");
                                                     }
                                                   },
                                                   icon: const Icon(Icons.call),
@@ -763,6 +784,124 @@ class _TargetNonuserPlateProfilePageState extends State<TargetNonuserPlateProfil
                                   givenEmoji: givenEmoji
                               ),
                               const SizedBox(height: 5,),
+                              Container(
+                                padding: const EdgeInsets.only(left: 8,  top: 12, bottom: 5),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 0.5, color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Colors.black54,
+                                        blurRadius: 1.0,
+                                        offset: Offset(0.0, 0.0)
+                                    )//
+                                  ],
+                                ),
+                                // height: 300,
+                                child: (_plateImageUserUploadList?.isEmpty ?? true) ?
+                                GestureDetector(
+                                  onTap: (){
+                                    showModalBottomSheet<void>(
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ModalBottomSheetEditProfileWidget(openCameraFunction: openCameraFunction, fromAlbumFunction: pickFromGallery ,);
+                                      },
+                                    );
+                                  },
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                          child: Icon(
+                                            Icons.add_a_photo,
+                                            color: Colors.grey,
+                                            size: 38,
+                                          )
+                                      ),
+                                      Text(
+                                        "Fotoğraf ekle",
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 17,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ) :
+                                Container(
+                                  height: 150,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [//
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount:( _plateImageUserUploadList?.isEmpty ?? true ) ? 0 : (_plateImageUserUploadList?.length)! , // total number of items in the grid
+                                          scrollDirection: Axis.horizontal,
+                                          padding: EdgeInsets.only(left: 3, bottom: 5),
+                                          itemBuilder: (BuildContext context, int index) {
+                                            // return the widget for the corresponding index
+                                            final plateImage = _plateImageUserUploadList?[index];
+                                            if (plateImage == null) return const SizedBox();
+                                            return GestureDetector(
+                                              onTap: (){
+                                                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                                                  return ViewSinglePhoto(imageProvider: NetworkImage(plateImage.imagePath),);
+                                                }));
+                                              },
+                                              child: Container(
+                                                width: 120,
+                                                margin: const EdgeInsets.only(left: 3, right: 3),
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(plateImage.imagePath),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: Colors.grey,
+                                                ),
+                                                child: null,
+                                              ),
+                                            );
+
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 28,
+                                        decoration: BoxDecoration(
+                                          color: AppConstants().primaryColor,
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        child: TextButton(
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 2, horizontal: 20)),
+                                          ),
+                                          onPressed: (){
+                                            showModalBottomSheet<void>(
+                                              backgroundColor: Colors.transparent,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return ModalBottomSheetEditProfileWidget(openCameraFunction: openCameraFunction, fromAlbumFunction: pickFromGallery ,);
+                                              },
+                                            );
+                                          },
+                                          child: Text(
+                                            "Fotoğraf ekle",
+                                            style: TextStyle(
+                                              color: AppConstants().secondaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5,),
                               WallPostsContainerWidget(
                                 userUid: _userUid,
                                 targetUserUid: widget.plateNumber,
@@ -778,4 +917,67 @@ class _TargetNonuserPlateProfilePageState extends State<TargetNonuserPlateProfil
       ),
     );
   }
+
+
+  Future pickProfilePhoto(ImageSource source) async {
+    try{
+      log("object");
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) {
+        log("message return dondu image 253");
+        return;
+      }
+      final imageTemparory = File(image.path);
+      final imageFile = await cropImage(imageFile: imageTemparory);
+      if (imageFile == null) return;
+      if(!mounted) return;
+      showSnackbar(context: context, color: AppConstants().primaryColor, message: "Fotoğraf yükleniyor", showProgressCircle: true);
+      final fistPhoto = await CustomAPIRequests().uploadUsersPlateImage(
+        file: imageFile,
+        plate: widget.plateNumber,
+      );
+
+      log("@#f23f2_f23f232f_23f23 $fistPhoto");
+      if (fistPhoto != null) {
+        await LicensePlatesServices(safePlateNumber: widget.plateNumber).newLicensePlateImageUploaded(
+          pathOfImage: fistPhoto,
+        );
+        final fristPhotoObj = PlateImageUserUpload(
+          imagePath: fistPhoto,
+          user: _userUid ?? "",
+          date: DateTime.now().millisecondsSinceEpoch,
+          isUser: _isSignedIn,
+        );
+        _plateImageUserUploadList = (_plateImageUserUploadList?.isEmpty ?? true) ? [] : _plateImageUserUploadList;
+        _plateImageUserUploadList?.add(fristPhotoObj);
+
+      }
+      setState(() {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
+    } on PlatformException catch (e) {
+      log("$e 511");
+    } catch (e) {
+      log("$e 532");
+
+    }
+  }
+
+  void openCameraFunction(){
+    pickProfilePhoto(ImageSource.camera);
+  }
+
+  void pickFromGallery(){
+    pickProfilePhoto(ImageSource.gallery);
+  }
+
+  Future<File?> cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage =
+    await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if (croppedImage == null) {
+      return null;
+    }
+    return File(croppedImage.path);
+  }
+
 }

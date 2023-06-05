@@ -258,6 +258,7 @@ class _HomePageMainState extends State<HomePageMain> {
                                   //FirestoreModeratorServices().deleteAndBackupVideos();
                                   if (_isSearchPlateRunning) return;
                                   setState(() {
+                                    FocusManager.instance.primaryFocus?.unfocus();
                                     _isSearchPlateRunning = true;
                                   });
                                   final safePlate = StringPlateExtensions.makePlateNumberSafe(textEditingController.text);

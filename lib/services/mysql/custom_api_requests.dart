@@ -44,6 +44,51 @@ class CustomAPIRequests{
     }
   }
 
+  Future<String?> uploadUsersPlateImage({required File file, required String plate, }) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('https://mubayazilim.com/sscar/api/upload_users_plate_image.php?plate=$plate'),
+    );
+
+    // Create a new multipart file from the provided file path
+    var multipartFile = await http.MultipartFile.fromPath('file', file.path);
+
+    // Attach the file to the request
+    request.files.add(multipartFile);
+
+    try {
+      // Send the request
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // File upload successful
+
+        var responseData = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseData);
+
+        // Access the data in the JSON response
+        final error = jsonResponse['error'] as bool?;
+        final path = jsonResponse['msg'] as String?;
+
+        if (error ?? true) {
+          log("@3f23f_23f23f232f_@3f23f $path");
+          return null;
+        }
+        return path;
+      } else {
+        // File upload failed
+        return null;
+      }
+    } catch (e) {
+      // Handle any errors
+      return null;
+    }
+  }
+
+
+
+
+
 /*
   Future<String?> uploadValidationVideoByPlate({required String plate, required Uint8List video}) async {
     String plateNum = StringPlateExtensions.makePlateNumberSafe(plate);

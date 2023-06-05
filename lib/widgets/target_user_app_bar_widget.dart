@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/app_constants.dart';
 
-class TargetUserAppBarWidget extends StatelessWidget with PreferredSizeWidget{
+class TargetUserAppBarWidget extends StatelessWidget implements PreferredSizeWidget{
   final String title;
   final IconData leftIcon;
   final Function? leftButtonBackFunction;

@@ -1,11 +1,8 @@
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../shared/app_constants.dart';
 
-class PagesDefaultAppBar extends StatelessWidget with PreferredSizeWidget{
+class PagesDefaultAppBar extends StatelessWidget implements PreferredSizeWidget{
   final String title;
   final IconData leftIcon;
   final Function? leftButtonBackFunction;

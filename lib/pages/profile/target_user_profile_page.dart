@@ -197,7 +197,7 @@ class _TargetUserProfilePageState extends State<TargetUserProfilePage> {
               toPlaka: widget.plateNumber,
               targetUserUid: widget.targetUserUid,
               kind: NotificationKinds.driverPoints).then((value){
-                log("f2_2f3_2f3 $value");
+            log("f2_2f3_2f3 $value");
           });
 
           PushNotificationsFunctions().sendPushNotification(
@@ -796,6 +796,24 @@ class _TargetUserProfilePageState extends State<TargetUserProfilePage> {
                                   userEmojisCollection: userEmojisCollection,
                                   emojiButtonTapped: emojiButtonTapped,
                                   givenEmoji: givenEmoji
+                              ),
+                              const SizedBox(height: 5,),
+                              Container(
+                                  padding: EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 0.5, color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.black54,
+                                          blurRadius: 1.0,
+                                          offset: Offset(0.0, 0.0)
+                                      )
+                                    ],
+                                  ),
+                                  // height: 300,
+                                  child:Center()
                               ),
                               const SizedBox(height: 5,),
                               WallPostsContainerWidget(
